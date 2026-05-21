@@ -63,7 +63,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
         assertEquals(1, repository.count());
 
         postAndVerifyReview(productId, reviewId, UNPROCESSABLE_ENTITY)
-                .jsonPath("$.path").isEqualTo("/review")
+                .jsonPath("$.path").isEqualTo("/")
                 .jsonPath("$.message").isEqualTo("Duplicate key, Product Id: 1, Review Id:1");
 
         assertEquals(1, repository.count());
@@ -136,7 +136,7 @@ class ReviewServiceApplicationTests extends MySqlTestBase {
         Review review = new Review(productId, reviewId, "Author " + reviewId, "Subject " + reviewId,
                 "Content " + reviewId, "SA");
         return client.post()
-                .uri("/review")
+                .uri("/")
                 .body(just(review), Review.class)
                 .accept(APPLICATION_JSON)
                 .exchange()

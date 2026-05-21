@@ -1,6 +1,7 @@
 package se.magnus.microservices.core.recommendation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import se.magnus.api.core.recommendation.Recommendation;
+import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -26,7 +28,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
     @BeforeEach
     void setupDb() {
-        repository.deleteAll();
+        repository.deleteAll().block();
     }
 
     @Test
@@ -38,7 +40,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
         postAndVerifyRecommendation(productId, 2, OK);
         postAndVerifyRecommendation(productId, 3, OK);
 
-        assertEquals(3, repository.findByProductId(productId).size());
+        assertEquals(3, (long) repository.findByProductId(productId).count().block());
 
         getAndVerifyRecommendationsByProductId(productId, OK)
                 .jsonPath("$.length()").isEqualTo(3)
@@ -56,13 +58,13 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
                 .jsonPath("$.productId").isEqualTo(productId)
                 .jsonPath("$.recommendationId").isEqualTo(recommendationId);
 
-        assertEquals(1, repository.count());
+        assertEquals(1, (long) repository.count().block());
 
         postAndVerifyRecommendation(productId, recommendationId, UNPROCESSABLE_ENTITY)
-                .jsonPath("$.path").isEqualTo("/recommendation")
+                .jsonPath("$.path").isEqualTo("/")
                 .jsonPath("$.message").isEqualTo("Duplicate key, Product Id: 1, Recommendation Id:1");
 
-        assertEquals(1, repository.count());
+        assertEquals(1, (long) repository.count().block());
     }
 
     @Test
@@ -72,10 +74,10 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
         int recommendationId = 1;
 
         postAndVerifyRecommendation(productId, recommendationId, OK);
-        assertEquals(1, repository.findByProductId(productId).size());
+        assertEquals(1, (long) repository.findByProductId(productId).count().block());
 
         deleteAndVerifyRecommendationsByProductId(productId, OK);
-        assertEquals(0, repository.findByProductId(productId).size());
+        assertEquals(0, (long) repository.findByProductId(productId).count().block());
 
         deleteAndVerifyRecommendationsByProductId(productId, OK);
     }
@@ -134,7 +136,7 @@ class RecommendationServiceApplicationTests extends MongoDbTestBase {
         Recommendation recommendation = new Recommendation(productId, recommendationId, "Author " + recommendationId,
                 recommendationId, "Content " + recommendationId, "SA");
         return client.post()
-                .uri("/recommendation")
+                .uri("/")
                 .body(just(recommendation), Recommendation.class)
                 .accept(APPLICATION_JSON)
                 .exchange()

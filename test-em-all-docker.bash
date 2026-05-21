@@ -60,6 +60,7 @@ function testUrl() {
 }
 
 function waitForService() {
+  echo "Wait for service to be available..."
   url=$@
   echo -n "Wait for: $url... "
   n=0
@@ -79,10 +80,11 @@ function waitForService() {
 }
 
 function recreateComposite() {
+  echo "Recreate product composite with productId: $1"
   local productId=$1
   local composite=$2
 
-  assertCurl 200 "curl -X DELETE http://$HOST:$PORT/product-composite/${productId} -s"
+  assertCurl 202 "curl -X DELETE http://$HOST:$PORT/product-composite/${productId} -s"
   curl -X POST http://$HOST:$PORT/product-composite -H "Content-Type: application/json" --data "$composite"
 }
 
