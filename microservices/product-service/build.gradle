@@ -14,6 +14,10 @@ java {
 }
 
 ext {
+    springCloudVersion = "2025.0.0"
+}
+
+ext {
     mapstructVersion = '1.6.3'
     springCloudVersion = '2025.0.0'
 }
