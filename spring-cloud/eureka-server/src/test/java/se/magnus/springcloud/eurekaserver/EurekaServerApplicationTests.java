@@ -11,12 +11,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT, properties = { "spring.cloud.config.enabled=false", })
 class EurekaServerApplicationTests {
 
   @Test
   void contextLoads() {
   }
+
   // EurekaServerApplicationTests, uses the credentials from the
   // configuration file when testing the APIs of the Eureka server
   @Value("${app.eureka-username}")

@@ -34,7 +34,8 @@ import java.util.Base64;
  *
  * @author Josh Cummings
  */
-@SpringBootTest(properties = {"eureka.client.enabled=false", "spring.cloud.config.enabled=false"})
+@SpringBootTest(properties = {"eureka.client.enabled=false", "spring.cloud.config.enabled=false",
+                "spring.cloud.stream.defaultBinder=rabbit"})
 @AutoConfigureMockMvc
 class OAuth2AuthorizationServerApplicationTests {
 

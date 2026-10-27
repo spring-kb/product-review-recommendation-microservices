@@ -1,6 +1,6 @@
 FROM eclipse-temurin:24_36-jre-noble AS builder
 WORKDIR /extracted
-ADD ./build/libs/*.jar app.jar
+ADD ./build/libs/*-SNAPSHOT.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM eclipse-temurin:24_36-jre-noble

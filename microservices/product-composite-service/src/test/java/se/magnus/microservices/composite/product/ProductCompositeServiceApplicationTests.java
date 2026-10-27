@@ -23,9 +23,11 @@ import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.microservices.composite.product.services.ProductCompositeIntegration;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = { TestSecurityConfig.class }, properties = {
-        "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
-        "spring.main.allow-bean-definition-overriding=true",
-        "eureka.client.enabled=false" })
+                "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
+                "spring.main.allow-bean-definition-overriding=true",
+                "eureka.client.enabled=false",
+                "spring.cloud.config.enabled=false",
+                "spring.cloud.stream.defaultBinder=rabbit", })
 class ProductCompositeServiceApplicationTests {
 
     private static final int PRODUCT_ID_OK = 1;

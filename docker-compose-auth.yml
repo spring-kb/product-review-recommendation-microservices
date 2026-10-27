@@ -4,6 +4,8 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
     depends_on:
       mongodb:
         condition: service_healthy
@@ -15,6 +17,8 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
     depends_on:
       mongodb:
         condition: service_healthy
@@ -26,6 +30,8 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
     depends_on:
       mysql:
         condition: service_healthy
@@ -37,6 +43,8 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=${AUTH_ISSUER_URI:-http://auth-server:9999}
     depends_on:
       rabbitmq:
@@ -88,7 +96,9 @@ services:
 
   gateway:
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker,auth"
+      - SPRING_PROFILES_ACTIVE=docker,auth
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=${AUTH_ISSUER_URI:-http://auth-server:9999}
       - SERVER_SSL_BUNDLE_JKS_GATEWAY_KEYSTORE_LOCATION=file:/keystore/edge-test.p12
       - SERVER_SSL_BUNDLE_JKS_GATEWAY_KEYSTORE_PASSWORD=testtest
@@ -98,3 +108,13 @@ services:
     mem_limit: 512m
     ports:
       - "8443:8443"
+  config-server:
+    build: spring-cloud/config-server
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,native
+      - ENCRYPT_KEY=${CONFIG_SERVER_ENCRYPT_KEY}
+      - SPRING_SECURITY_USER_NAME=${CONFIG_SERVER_USR}
+      - SPRING_SECURITY_USER_PASSWORD=${CONFIG_SERVER_PWD}
+    volumes:
+      - ./config-repo:/config-repo
