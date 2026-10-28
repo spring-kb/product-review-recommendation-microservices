@@ -100,7 +100,7 @@ class ProductServiceImplTest {
         when(mapper.entityToApi(any(ProductEntity.class))).thenReturn(product);
         when(serviceUtil.getServiceAddress()).thenReturn("serviceAddress");
 
-        Mono<Product> result = service.getProduct(1);
+        Mono<Product> result = service.getProduct(1, anyInt(), anyInt());
 
         StepVerifier.create(result)
                 .expectNext(product)
@@ -109,14 +109,14 @@ class ProductServiceImplTest {
 
     //@Test
     void getProduct_shouldThrowInvalidInputException_whenInvalidProductId() {
-        assertThrows(InvalidInputException.class, () -> service.getProduct(0));
+        assertThrows(InvalidInputException.class, () -> service.getProduct(0, anyInt(), anyInt()));
     }
 
     //@Test
     void getProduct_shouldThrowNotFoundException_whenNotFound() {
         when(repository.findByProductId(anyInt())).thenReturn(Mono.empty());
 
-        Mono<Product> result = service.getProduct(1);
+        Mono<Product> result = service.getProduct(1, anyInt(), anyInt());
 
         StepVerifier.create(result)
                 .expectError(NotFoundException.class)
