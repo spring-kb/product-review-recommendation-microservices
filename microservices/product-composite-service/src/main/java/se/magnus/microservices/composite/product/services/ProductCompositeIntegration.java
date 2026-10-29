@@ -62,11 +62,12 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     public ProductCompositeIntegration(
             @Qualifier("publishEventScheduler") Scheduler publishEventScheduler,
-            WebClient.Builder webClientBuilder,
+            WebClient webClient,
             ObjectMapper mapper,
             StreamBridge streamBridge,
             ServiceUtil serviceUtil) {
-        this.webClient = webClientBuilder.build();
+
+        this.webClient = webClient;
 
         this.publishEventScheduler = publishEventScheduler;
         this.mapper = mapper;
@@ -115,7 +116,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
         return Mono.just(
                 new Product(productId, "Fallback product" + productId, productId, serviceUtil.getServiceAddress()));
     }
-    
+
     @Override
     public Mono<Void> deleteProduct(int productId) {
 
