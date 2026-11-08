@@ -91,14 +91,6 @@ services:
       timeout: 2s
       retries: 60
 
-  eureka:
-    build: spring-cloud/eureka-server
-    mem_limit: 512m
-    environment:
-    - SPRING_PROFILES_ACTIVE=docker
-    - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
-    - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-
   gateway:
     build: spring-cloud/gateway
     mem_limit: 512m
@@ -120,7 +112,7 @@ services:
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
     healthcheck:
-      test: ["CMD", "wget", "-O -", "-q", "http://localhost:9999/actuator/health"]
+      test: ["CMD", "wget", "-O -", "-q", "http://localhost:80/actuator/health"]
       interval: 5s
       timeout: 2s
       retries: 60

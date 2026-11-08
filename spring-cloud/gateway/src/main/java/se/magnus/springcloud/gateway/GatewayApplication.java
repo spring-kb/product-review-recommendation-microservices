@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class GatewayApplication {
 
   @Bean
-  @LoadBalanced
+  //@LoadBalanced
   public WebClient.Builder loadBalancedWebClientBuilder() {
     return WebClient.builder();
   }
