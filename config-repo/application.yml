@@ -4,8 +4,6 @@ app:
 spring.rabbitmq:
   host: 127.0.0.1
   port: 5672
-  username: guest
-  password: '{cipher}17fcf0ae5b8c5cf87de6875b699be4a1746dd493a99d926c7a26a68c422117ef'
 
 spring.cloud.stream.kafka.binder:
   brokers: 127.0.0.1
@@ -22,6 +20,8 @@ management.health.kafka.enabled: false
 
 management.zipkin.tracing.endpoint: http://zipkin-server:9411/api/v2/spans
 management.tracing.sampling.probability: 1.0
+logging.pattern.correlation: "[${spring.application.name:},%X{traceId:-},%X{spanId:-}] "
+logging.include-application-name: false
 
 server.shutdown: graceful
 spring.lifecycle.timeout-per-shutdown-phase: 10s

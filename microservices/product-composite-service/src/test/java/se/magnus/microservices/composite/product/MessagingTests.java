@@ -36,8 +36,7 @@ import se.magnus.api.event.Event;
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = { TestSecurityConfig.class }, properties = {
         "spring.security.oauth2.resourceserver.jwt.issuer-uri=",
         "spring.main.allow-bean-definition-overriding=true",
-        "spring.cloud.stream.defaultBinder=rabbit",
-        "spring.cloud.config.enabled=false" })
+        "spring.cloud.stream.defaultBinder=rabbit"})
 @Import({ TestChannelBinderConfiguration.class })
 class MessagingTests {
 

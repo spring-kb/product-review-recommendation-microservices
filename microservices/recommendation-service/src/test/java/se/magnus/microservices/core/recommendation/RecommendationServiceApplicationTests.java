@@ -21,7 +21,7 @@ import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.microservices.core.recommendation.persistence.RecommendationRepository;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, properties = {
-        "spring.cloud.config.enabled=false",
+        
                 "spring.cloud.stream.defaultBinder=rabbit" })
 class RecommendationServiceApplicationTests extends MongoDbTestBase {
 

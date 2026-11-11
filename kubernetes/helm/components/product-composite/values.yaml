@@ -3,15 +3,15 @@ fullnameOverride: product-composite
 image:
   name: product-composite-service
 
-resources:
-  requests:
-    memory: 512Mi
-  limits:
-    memory: 1Gi
-
 env:
   SPRING_PROFILES_ACTIVE: "docker"
+  SPRING_CONFIG_LOCATION: file:/config-repo/application.yml,file:/config-repo/product-composite.yml
 
 livenessProbe_enabled: true
 
 readinessProbe_enabled: true
+
+configmap:
+  enabled: true
+  volumeMounts:
+    mountPath: /config-repo

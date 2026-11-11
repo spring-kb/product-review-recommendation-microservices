@@ -21,11 +21,6 @@ dependencies:
   - name: mysql
     version: 1.0.0
     repository: file://../../components/mysql
-
-  - name: config-server
-    version: 1.0.0
-    repository: file://../../components/config-server
-
   - name: gateway
     version: 1.0.0
     repository: file://../../components/gateway
@@ -53,4 +48,3 @@ dependencies:
   - name: zipkin-server
     version: 1.0.0
     repository: file://../../components/zipkin-server
-

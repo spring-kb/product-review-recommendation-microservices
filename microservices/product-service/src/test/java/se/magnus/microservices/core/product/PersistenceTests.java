@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 import se.magnus.microservices.core.product.persistence.ProductEntity;
 import se.magnus.microservices.core.product.persistence.ProductRepository;
 
-@DataMongoTest(properties = { "spring.cloud.config.enabled=false",
+@DataMongoTest(properties = { 
                 "spring.cloud.stream.defaultBinder=rabbit" })
 class PersistenceTests extends MongoDbTestBase {
 
